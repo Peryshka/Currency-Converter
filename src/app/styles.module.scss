@@ -1,0 +1,66 @@
+//: global for global classNames styles
+.currency-converter-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  width: 500px;
+  padding: 20px;
+  border-radius: 5px;
+
+  .titleWrap {
+    text-align: center;
+    margin-bottom: 50px;
+
+    .title {
+      font-weight: 700;
+      font-size: 25px;
+    }
+  }
+  .amountInput {
+    border: 1px solid lightgrey;
+    height: 40px;
+    width: 100%;
+    border-radius: 5px;
+    padding-left: 15px;
+    outline: none;
+  }
+  .selectWrap {
+    display: flex;
+    justify-content: space-between;
+    :global .css-1u9des2-indicatorSeparator {
+      display: none;
+    }
+  }
+  .swapIcon {
+    margin-top: 20px;
+    width: 80px;
+    height: 35px;
+  }
+  .result {
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  .error {
+    color: red;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 10px;
+  }
+
+}
+
+.App {
+  text-align: center;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+
+
+
+
