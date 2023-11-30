@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 const Button = (props) => {
   const {
-  children,
+    children,
     className,
     type = 'button',
     onClick
@@ -14,13 +14,14 @@ const Button = (props) => {
     styles.button,
     className
   );
-  return(
+  return (
     <button type={type}
             onClick={onClick}
-      className={mainClasses}>
+            className={mainClasses}>
       {children}
     </button>
   )
 };
 
 export default Button;
+

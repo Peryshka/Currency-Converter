@@ -8,6 +8,7 @@ import Result from "../components/result";
 import {REQUEST_HEADERS} from "../api/endpoints";
 import {API} from '../api/endpoints';
 import clsx from 'clsx';
+import {TailSpin} from "react-loader-spinner";
 
 function App() {
   const [fromOption, setFromOption] = useState(null);
@@ -16,16 +17,31 @@ function App() {
   const [amount, setAmount] = useState('');
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneralLoading, setIsGeneralLoading] = useState(false);
   const [error, setError] = useState(null);
   const handleSwap = () => {
     setFromOption(toOption);
     setToOption(fromOption);
   };
+
+
   const getSymbols = async () => {
-    const res = await fetch(API.CURRENCY.symbols, REQUEST_HEADERS);
-    const data = await res.json();
-    return data.symbols;
+    try {
+      setIsGeneralLoading(true);
+      const res = await fetch(API.CURRENCY.symbols, REQUEST_HEADERS);
+      const data = await res.json();
+      return data.symbols;
+    } catch (err) {
+      console.log('Ошибка при получении данных:', err);
+    } finally {
+      setIsGeneralLoading(false);
+    }
   }
+
+  useEffect(() => {
+    getSymbols();
+  }, []);
+
 
   const transformSymbolsDataToOptions = (symbolObj) => {
     return Object.keys(symbolObj).map(item => {
@@ -36,9 +52,9 @@ function App() {
     })
   }
 
-  const handleConvertCurrency = async() => {
-    if(!amount || !toOption || !fromOption){
-     setError('Please fill in fields amount, from and to!');
+  const handleConvertCurrency = async () => {
+    if (!amount || !toOption || !fromOption) {
+      setError('Please fill in fields amount, from and to!');
       return;
     } else {
       setError('');
@@ -54,14 +70,14 @@ function App() {
         from: data.query.from,
         to: data.query.to,
       })
-    }catch(err) {
-     setError(err);
+    } catch (err) {
+      setError(err);
     }
   }
 
-  const isBtnDisabled = amount === '' || fromOption === null || toOption === null;
+  const isBtnDisabled = amount === '' || fromOption === null || toOption === null || isLoading;
   useEffect(() => {
-    (async() => {
+    (async () => {
       const symbols = await getSymbols();
       const options = transformSymbolsDataToOptions(symbols);
       setSymbolsOptions(options);
@@ -69,6 +85,9 @@ function App() {
   }, [])
   return (
     <div className={styles['currency-converter-wrap']}>
+      {isGeneralLoading && (
+        <TailSpin color="green" radius={"8px"} className={styles.tailspin}/>
+      )}
       <div className={styles.titleWrap}>
         <h1 className={styles.title}>Currency Converter</h1>
       </div>
@@ -100,22 +119,25 @@ function App() {
       <div className={styles.result}>
         {result && `${amount} ${result.from} = ${result.result} ${result.to}`}
       </div>
-      {error && (
-        <h3 className={styles.error}>{error}</h3>
-      )}
+      {
+        error && (
+          <h3 className={styles.error}>{error}</h3>
+        )
+      }
       <Button
         onClick={handleConvertCurrency}
         className={clsx(styles['convert-btn'], {'disabled': isBtnDisabled})}
         disabled={isBtnDisabled}
       >
         {isLoading && (
-          <i className ="fa fa-spinner fa-spin" ></i>
+          <i className="fa fa-spinner fa-spin"></i>
         )}
         Convert
       </Button>
     </div>
   );
 }
+
 export default App;
 
 
