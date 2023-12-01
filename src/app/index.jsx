@@ -85,55 +85,60 @@ function App() {
   }, [])
   return (
     <div className={styles['currency-converter-wrap']}>
-      {isGeneralLoading && (
-        <TailSpin color="green" radius={"8px"} className={styles.tailspin}/>
-      )}
       <div className={styles.titleWrap}>
         <h1 className={styles.title}>Currency Converter</h1>
       </div>
-      <EnterAmount
-        type="number"
-        label="Enter Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        className={styles.amountInput}
-      />
-      <div className={styles.selectWrap}>
-        <CustomSelect
-          label="From"
-          value={fromOption}
-          onChange={val => setFromOption(val)}
-          options={symbolsOptions}
-        />
-        <div className={styles.iconWrap} onClick={handleSwap}>
-          <IoMdSwap className={styles.swapIcon}/>
-        </div>
-        <CustomSelect
-          label="To"
-          value={toOption}
-          onChange={val => setToOption(val)}
-          options={symbolsOptions}
-        />
+      <div className={styles.loading}>
+        {isGeneralLoading ? (
+            <TailSpin radius={'8px'} className={styles.tailspin}/>
+          ) :
+          <div>
+            <EnterAmount
+              type="number"
+              label="Enter Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className={styles.amountInput}
+            />
+            <div className={styles.selectWrap}>
+              <CustomSelect
+                label="From"
+                value={fromOption}
+                onChange={val => setFromOption(val)}
+                options={symbolsOptions}
+              />
+              <div className={styles.iconWrap} onClick={handleSwap}>
+                <IoMdSwap className={styles.swapIcon}/>
+              </div>
+              <CustomSelect
+                label="To"
+                value={toOption}
+                onChange={val => setToOption(val)}
+                options={symbolsOptions}
+              />
+            </div>
+            <Result/>
+            <div className={styles.result}>
+              {result && `${amount} ${result.from} = ${result.result} ${result.to}`}
+            </div>
+            {
+              error && (
+                <h3 className={styles.error}>{error}</h3>
+              )
+            }
+            <Button
+              onClick={handleConvertCurrency}
+              className={clsx(styles['convert-btn'], {'disabled': isBtnDisabled})}
+            >
+              {isLoading && (
+                <i className="fa fa-spinner fa-spin"></i>
+              )}
+              Convert
+            </Button>
+          </div>
+        }
       </div>
-      <Result/>
-      <div className={styles.result}>
-        {result && `${amount} ${result.from} = ${result.result} ${result.to}`}
-      </div>
-      {
-        error && (
-          <h3 className={styles.error}>{error}</h3>
-        )
-      }
-      <Button
-        onClick={handleConvertCurrency}
-        className={clsx(styles['convert-btn'], {'disabled': isBtnDisabled})}
-        disabled={isBtnDisabled}
-      >
-        {isLoading && (
-          <i className="fa fa-spinner fa-spin"></i>
-        )}
-        Convert
-      </Button>
+
     </div>
   );
 }
