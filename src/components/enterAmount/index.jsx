@@ -11,6 +11,12 @@ const EnterAmount = (props) => {
     disabled
   } = props;
 
+  const disabledInput = clsx(
+    styles.amountInput,
+    className,
+    {'disabledInput' : disabled}
+  );
+
   return (
     <div className={styles.inputWrap}>
       {label && (
@@ -21,7 +27,7 @@ const EnterAmount = (props) => {
       <input
         value={value}
         onChange={onChange}
-        className={className}
+        className={disabledInput}
         disabled={disabled}
       />
     </div>

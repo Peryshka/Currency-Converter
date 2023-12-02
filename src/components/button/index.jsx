@@ -13,8 +13,7 @@ const Button = (props) => {
   const mainClasses = clsx(
     styles.convertBtn,
     className,
-    {'disabled' : disabled}
-
+    {'disabled': disabled}
   );
 
   return (

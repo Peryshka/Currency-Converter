@@ -19,9 +19,9 @@ const CurrencySelect = (props) => {
   )
 
   const formatOptionLabel = (option) => {
-    return(
+    return (
       <div className={styles['custom-option']}>
-        <CurrencyFlag width={20}  height={13} currency={option.value} />
+        <CurrencyFlag width={20} height={13} currency={option.value}/>
         <div className={styles['label']}>{option.label}</div>
       </div>
     )
@@ -46,4 +46,7 @@ const CurrencySelect = (props) => {
 };
 
 export default CurrencySelect;
+
+
+
 

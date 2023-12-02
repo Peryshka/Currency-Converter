@@ -90,7 +90,8 @@ function App() {
       setSymbolsOptions(options);
     })()
   }, [])
-  const isBtnDisabled = amount === '' || fromOption === null || toOption === null ;
+  const isInputDisabled = fromOption === null || toOption === null;
+  const isBtnDisabled = amount === '' || fromOption === null || toOption === null;
   return (
     <div className={styles['currency-converter-wrap']}>
       <div className={styles.titleWrap}>
@@ -98,16 +99,16 @@ function App() {
       </div>
       <div className={styles.loading}>
         {isGeneralLoading ? (
-          <ContentLoader
-            viewBox="0 0 400 160"
-            height={160}
-            width={400}
-            backgroundColor="transparent"
-          >
-            <circle cx="150" cy="86" r="8" />
-            <circle cx="194" cy="86" r="8" />
-            <circle cx="238" cy="86" r="8" />
-          </ContentLoader>
+            <ContentLoader
+              viewBox="0 0 400 160"
+              height={160}
+              width={400}
+              backgroundColor="transparent"
+            >
+              <circle cx="150" cy="86" r="8"/>
+              <circle cx="194" cy="86" r="8"/>
+              <circle cx="238" cy="86" r="8"/>
+            </ContentLoader>
           ) :
           <div>
             <EnterAmount
@@ -115,7 +116,7 @@ function App() {
               label="Enter Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className={styles.amountInput}
+              disabled={isInputDisabled}
             />
             <div className={styles.selectWrap}>
               <CurrencySelect
@@ -160,6 +161,9 @@ function App() {
 }
 
 export default App;
+
+
+
 
 
 

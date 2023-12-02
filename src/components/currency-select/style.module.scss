@@ -4,3 +4,9 @@
   outline: none;
   border-right: none;
 }
+
+.custom-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
