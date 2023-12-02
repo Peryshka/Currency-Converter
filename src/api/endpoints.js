@@ -1,4 +1,4 @@
-const API_KEY = '0fmzNh1SP7mdkXhQcqCXnR4nb0SNRQoJ';
+const API_KEY = 'edfAZw3PzU10l6NH9JtaeCS0MDNoXY1X';
 const BASE_API = 'https://api.apilayer.com';
 
 const REQUEST_HEADERS = {

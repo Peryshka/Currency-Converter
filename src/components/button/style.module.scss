@@ -1,4 +1,4 @@
-.button {
+.convertBtn {
   display: block;
   width: max-content;
   border: none;
@@ -9,6 +9,10 @@
   line-height: 12px;
   font-size: 16px;
   margin-top: 30px;
+}
+
+.disabled {
+  opacity: 0.5;
 }
 
 

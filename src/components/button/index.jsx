@@ -5,19 +5,24 @@ import clsx from 'clsx';
 const Button = (props) => {
   const {
     children,
-    className,
     type = 'button',
-    onClick
+    onClick,
+    className,
+    disabled
   } = props;
-
   const mainClasses = clsx(
-    styles.button,
-    className
+    styles.convertBtn,
+    className,
+    {'disabled' : disabled}
+
   );
+
   return (
     <button type={type}
             onClick={onClick}
-            className={mainClasses}>
+            className={mainClasses}
+            disabled={disabled}
+    >
       {children}
     </button>
   )

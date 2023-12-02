@@ -1,14 +1,13 @@
 import styles from './styles.module.scss';
 import Button from "../components/button";
-import {useState, useEffect} from 'react';
-import CustomSelect from "../components/select/index";
+import React, {useState, useEffect} from 'react';
 import EnterAmount from "../components/enterAmount";
 import {IoMdSwap} from "react-icons/io";
 import Result from "../components/result";
 import {REQUEST_HEADERS} from "../api/endpoints";
 import {API} from '../api/endpoints';
-import clsx from 'clsx';
-import {TailSpin} from "react-loader-spinner";
+import CurrencySelect from "../components/currency-select/index";
+import ContentLoader from "react-content-loader";
 
 function App() {
   const [fromOption, setFromOption] = useState(null);
@@ -55,6 +54,9 @@ function App() {
   const handleConvertCurrency = async () => {
     if (!amount || !toOption || !fromOption) {
       setError('Please fill in fields amount, from and to!');
+      setTimeout(() => {
+        setError('');
+      }, 4000);
       return;
     } else {
       setError('');
@@ -63,7 +65,6 @@ function App() {
     try {
       const res = await fetch(API.CURRENCY.convert(toOption.value, fromOption.value, amount), REQUEST_HEADERS)
       const data = await res.json()
-      setIsLoading(false);
       setResult({
         amount: data.query.amount,
         result: data.result,
@@ -71,11 +72,17 @@ function App() {
         to: data.query.to,
       })
     } catch (err) {
-      setError(err);
+      console.log('Ошибка при получении данных:', err);
+    } finally {
+      setIsLoading(false);
+      setTimeout(() => {
+        setAmount('');
+        setFromOption('');
+        setToOption('');
+        setResult('');
+      }, 7000);
     }
   }
-
-  const isBtnDisabled = amount === '' || fromOption === null || toOption === null || isLoading;
   useEffect(() => {
     (async () => {
       const symbols = await getSymbols();
@@ -83,6 +90,7 @@ function App() {
       setSymbolsOptions(options);
     })()
   }, [])
+  const isBtnDisabled = amount === '' || fromOption === null || toOption === null ;
   return (
     <div className={styles['currency-converter-wrap']}>
       <div className={styles.titleWrap}>
@@ -90,7 +98,16 @@ function App() {
       </div>
       <div className={styles.loading}>
         {isGeneralLoading ? (
-            <TailSpin radius={'8px'} className={styles.tailspin}/>
+          <ContentLoader
+            viewBox="0 0 400 160"
+            height={160}
+            width={400}
+            backgroundColor="transparent"
+          >
+            <circle cx="150" cy="86" r="8" />
+            <circle cx="194" cy="86" r="8" />
+            <circle cx="238" cy="86" r="8" />
+          </ContentLoader>
           ) :
           <div>
             <EnterAmount
@@ -101,7 +118,7 @@ function App() {
               className={styles.amountInput}
             />
             <div className={styles.selectWrap}>
-              <CustomSelect
+              <CurrencySelect
                 label="From"
                 value={fromOption}
                 onChange={val => setFromOption(val)}
@@ -110,7 +127,7 @@ function App() {
               <div className={styles.iconWrap} onClick={handleSwap}>
                 <IoMdSwap className={styles.swapIcon}/>
               </div>
-              <CustomSelect
+              <CurrencySelect
                 label="To"
                 value={toOption}
                 onChange={val => setToOption(val)}
@@ -128,7 +145,7 @@ function App() {
             }
             <Button
               onClick={handleConvertCurrency}
-              className={clsx(styles['convert-btn'], {'disabled': isBtnDisabled})}
+              disabled={isBtnDisabled}
             >
               {isLoading && (
                 <i className="fa fa-spinner fa-spin"></i>
@@ -138,7 +155,6 @@ function App() {
           </div>
         }
       </div>
-
     </div>
   );
 }
